@@ -108,7 +108,6 @@ class Location(Base):
 	description = Column(String)
 	favorite = Column(Boolean)
 	#point = Column(geo)
-	zoom = Column(Integer)
 	
 	def __repr__(self):
 		return "<Location('%s','%s')>" % (self.id, self.name)
