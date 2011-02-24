@@ -9,6 +9,7 @@ Created by Rodolfo Barriga
 from sqlalchemy import Table, Column, ForeignKey, String, Integer, Boolean, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
+from geoalchemy import *
 
 Base = declarative_base()
 
@@ -96,6 +97,9 @@ class Raster(Base):
 	url = Column(String)
 	minz = Column(Integer)
 	maxz = Column(Integer)
+	center = GeometryColumn(Point(2))
+	min = GeometryColumn(Point(2))
+	max = GeometryColumn(Point(2))
 	order = Column(Integer)
 
 	def __repr__(self):
@@ -107,7 +111,7 @@ class Location(Base):
 	name = Column(String)
 	description = Column(String)
 	favorite = Column(Boolean)
-	#point = Column(geo)
+	point = GeometryColumn(Point(2))
 	
 	def __repr__(self):
 		return "<Location('%s','%s')>" % (self.id, self.name)
@@ -121,8 +125,8 @@ class Workspace(Base):
 	overlays = Column(String)
 	baselayer = Column(String)
 	public = Column(Boolean)
-	#center_point = geometry,
-	user_name = Column(String)   # relation owner!! 
+	center_point = GeometryColumn(Point(3))
+	user_name = Column(String)
 	date = Column(Date)
 	
 	def __repr__(self):
