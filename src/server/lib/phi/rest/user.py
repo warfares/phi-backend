@@ -122,5 +122,6 @@ def get_nodes():
 def get_rasters():
 	user_name = request.GET.get('userName')
 	rasters = repo.User().read(user_name).rasters
+	rasters = sorted(rasters, key=lambda r:r.order)
 	o = map(lambda r: vo.raster(r), rasters)
 	return vo.collection(o, len(o))
