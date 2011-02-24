@@ -97,7 +97,7 @@ class Raster(Base):
 	url = Column(String)
 	minz = Column(Integer)
 	maxz = Column(Integer)
-	center = GeometryColumn(Point(2))
+	point = GeometryColumn(Point(2))
 	min = GeometryColumn(Point(2))
 	max = GeometryColumn(Point(2))
 	order = Column(Integer)
@@ -125,9 +125,9 @@ class Workspace(Base):
 	overlays = Column(String)
 	baselayer = Column(String)
 	public = Column(Boolean)
-	center_point = GeometryColumn(Point(3))
 	user_name = Column(String)
 	date = Column(Date)
+	point = GeometryColumn(Point(3))
 	
 	def __repr__(self):
 		return "<Workspace('%s','%s')>" % (self.id, self.name)
