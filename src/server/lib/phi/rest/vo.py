@@ -1,3 +1,4 @@
+from shapely.wkb import loads
 # vo-> objects python to JS notation 
 
 #general purpose 
@@ -16,6 +17,16 @@ def entity(o):
 	}
 	return vo
 
+def point(o):
+	vo = { 
+		'x': o.x, 
+		'y': o.y 
+	}
+	if (o.has_z):
+		vo['z'] = o.z
+	return vo
+
+#model entities.
 #user
 def user_base(o):
 	vo = {
@@ -61,6 +72,9 @@ def build_tree(ext_node, nodes):
 
 #raster 
 def raster(o):
+	p = loads(str(o.point.geom_wkb))
+	min = loads(str(o.min.geom_wkb))
+	max = loads(str(o.max.geom_wkb))
 	vo = {
 		'id':o.id,
 		'name':o.name,
@@ -69,7 +83,10 @@ def raster(o):
 		'url': o.url,
 		'minz': o.minz,
 		'maxz': o.maxz,
-		'order': o.order
+		'order': o.order,
+		'point': point(p),
+		'min': point(min),
+		'max': point(max)
 	}
 	return vo
 
@@ -87,16 +104,19 @@ def layer(o):
 
 #location
 def location(o):
+	p = loads(str(o.point.geom_wkb))
 	vo = {
 		'id':o.id,
 		'name':o.name,
 		'description':o.description,
-		'favorite':o.favorite
+		'favorite':o.favorite,
+		'point': point(p)
 	}
 	return vo
 
 #workspace
 def workspace(o):
+	p = loads(str(o.point.geom_wkb))
 	vo = {
 		'id':o.id,
 		'name':o.name,
@@ -106,6 +126,7 @@ def workspace(o):
 		'baselayer':o.baselayer,
 		'public':o.public,
 		'userName':o.user_name,
-		'date':o.date.ctime()
+		'date':o.date.ctime(),
+		'point': point(p)
 	}
 	return vo
