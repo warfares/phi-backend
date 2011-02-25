@@ -48,7 +48,7 @@ def user(o):
 	}
 	return vo
 
-#extjs node 
+#extjs node (layer) 
 class ExtNode:
 	def __init__(self, id, text):
 		self.id = id
@@ -58,6 +58,7 @@ class ExtNode:
 		self.checked = False
 		self.children = []
 		self.layerId = ''
+		self.srid = -1
 
 
 def build_tree(ext_node, nodes):
@@ -67,6 +68,7 @@ def build_tree(ext_node, nodes):
 		if (t.leaf):
 			ext_child.leaf = True
 			ext_child.layerId = t.layer.name
+			ext_child.srid = t.layer.srid
 		ext_node.children.append(ext_child.__dict__)
 		build_tree(ext_child, nodes)
 
