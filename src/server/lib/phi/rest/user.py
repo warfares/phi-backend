@@ -10,7 +10,7 @@ def all():
 	o = map(lambda u: vo.user_base(u), users)
 	return vo.collection(o, len(o))
 
-@route('user/read/:id')
+@route('user/:id')
 def read(id):
 	u = repo.User().read(id)
 	o = vo.user(u) if u else ''
