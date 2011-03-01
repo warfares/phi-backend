@@ -17,8 +17,7 @@ def entity(o):
 	}
 	return vo
 
-#common ExtJS output 
-def ext_form(success,error=''):
+def success(success,error=''):
 	vo = {
 		'success': success,
 	    'errorMsg': error 
