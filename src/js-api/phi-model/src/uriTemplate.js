@@ -19,7 +19,7 @@ Phi.WSGIScriptAlias = 'phi-rest';
 */
 Phi.UriTemplate = {
 	users: '/user/all',
-	user: '/user/read/',
+	user: '/user',
 	userLogin: '/user/login',
 	
 	//user locations
@@ -34,16 +34,20 @@ Phi.UriTemplate = {
 	userGetNodes: '/user/getnodes',
 
 	//user rasters
-	userGetRasters: '/user/getrasters',
-
-	workspaceGetByOwner: '/workspace/get_by_owner',      
+	userGetRasters: '/user/getrasters',  
 
 	//layer service
-	layer: '/layer/read/',
+	layer: '/layer',
+	
+	//location 
+	location: '/location',
+	
+	//workspace service
+	workspaceGetByOwner: '/workspace/get_by_owner',    
 
 	getUri: function(action, option) {
 		var hostname = 'http://' + window.location.hostname + '/';
-		return hostname + Phi.WSGIScriptAlias + '/' + Phi.UriTemplate[action] + (option || '');
+		return hostname + Phi.WSGIScriptAlias + Phi.UriTemplate[action] + (option || '');
 	}
-};  // eo Phi.Uritemplate
+};// eo Phi.Uritemplate
 // eof

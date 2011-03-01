@@ -19,11 +19,7 @@ user.Read('someUser'); //  The async call
  * @date      15. February 2011
  */
 Phi.model.User = Ext.extend(Phi.model.Entity, {
-
-	createURL: '',
-	readURL: Phi.UriTemplate.getUri('user'),
-	updateURL: '',
-	removeURL: Phi.UriTemplate.getUri('user'),
+	entityURL: Phi.UriTemplate.getUri('user'),
 
 	initComponent: function (config) {
 		this.addEvents(

@@ -40,7 +40,7 @@ Phi.model.Entity = Ext.extend(Ext.util.Observable, {
 	*/
 	create: function (o) {
 		Ext.Ajax.request({
-			url: this.createURL,
+			url: this.entityURL,
 			method: 'POST',
 			headers: { 'Content-Type': 'text/json' },
 			jsonData: o,
@@ -57,7 +57,7 @@ Phi.model.Entity = Ext.extend(Ext.util.Observable, {
 	*/
 	read: function (id) {
 		Ext.Ajax.request({
-			url: this.readURL + id,
+			url: this.entityURL + '/' + id,
 			scope:this,
 			success: function (r, opt) {
 				var o = Ext.util.JSON.decode(r.responseText);
@@ -72,7 +72,7 @@ Phi.model.Entity = Ext.extend(Ext.util.Observable, {
 	*/
 	update: function (o) {
 		Ext.Ajax.request({
-			url: this.updateURL,
+			url: this.entityURL,
 			method: 'PUT',
 			headers: { 'Content-Type': 'text/json' },
 			jsonData: o,
@@ -89,7 +89,7 @@ Phi.model.Entity = Ext.extend(Ext.util.Observable, {
 	*/
 	remove: function (id) {
 		Ext.Ajax.request({
-			url: this.removeURL + id,
+			url: this.entityURL + '/' + id,
 			method: 'DELETE',
 			scope:this,
 			success: function (r, opt) {

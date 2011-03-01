@@ -3,7 +3,7 @@ Ext.ns("Phi.model");
  * @class Phi.model.Layer 
  * @extends Phi.model.Entity
  * 
- * Philosophy Location Proxy
+ * Philosophy Layer Proxy
  * 
  * @author rbarriga
  * @version 1.0
@@ -12,7 +12,7 @@ Ext.ns("Phi.model");
  *
  */
 Phi.model.Layer = Ext.extend(Phi.model.Entity, {
-	readURL: Phi.UriTemplate.getUri('layer'),
+	entityURL: Phi.UriTemplate.getUri('layer'),
 
 	initComponent: function (config) {
 		Phi.model.Layer.superclass.initComponent.call(config);
