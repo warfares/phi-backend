@@ -72,7 +72,7 @@ def delete(id):
 	return vo.success(True)
 
 @post('location/favorite')
-def enabled():
+def favorite():
 	o = json.load(request.body)
 	id = o['id']
 	favorite = o['favorite']
@@ -80,6 +80,6 @@ def enabled():
 	repo_location = repo.Location()
 	l = repo_location.read(id)
 	l.favorite = favorite
-	repo_location.update(l)
+	repo_location.create(l)
 	
 	return vo.success(True)
