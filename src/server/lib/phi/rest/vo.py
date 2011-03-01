@@ -17,6 +17,15 @@ def entity(o):
 	}
 	return vo
 
+#common ExtJS output 
+def ext_form(success,error=''):
+	vo = {
+		'success': success,
+	    'errorMsg': error 
+	}
+	return vo
+
+#geom vo def
 def point(o):
 	vo = { 
 		'x': o.x, 
@@ -25,6 +34,7 @@ def point(o):
 	if (o.has_z):
 		vo['z'] = o.z
 	return vo
+
 
 #model entities.
 #user
