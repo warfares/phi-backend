@@ -41,6 +41,7 @@ Phi.UriTemplate = {
 	
 	//location 
 	location: '/location',
+	locationFavorite: '/location/favorite',
 	
 	//workspace service
 	workspaceGetByOwner: '/workspace/get_by_owner',    
