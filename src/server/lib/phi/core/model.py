@@ -97,9 +97,9 @@ class Raster(Base):
 	url = Column(String)
 	minz = Column(Integer)
 	maxz = Column(Integer)
-	point = GeometryColumn(Point(2))
-	min = GeometryColumn(Point(2))
-	max = GeometryColumn(Point(2))
+	point = GeometryColumn(Point(2,96))
+	min = GeometryColumn(Point(2,96))
+	max = GeometryColumn(Point(2,96))
 	order = Column(Integer)
 
 	def __repr__(self):
@@ -111,7 +111,7 @@ class Location(Base):
 	name = Column(String)
 	description = Column(String)
 	favorite = Column(Boolean)
-	point = GeometryColumn(Point(2))
+	point = GeometryColumn(Point(2,96))
 	
 	def __repr__(self):
 		return "<Location('%s','%s')>" % (self.id, self.name)
@@ -127,7 +127,7 @@ class Workspace(Base):
 	public = Column(Boolean)
 	user_name = Column(String)
 	date = Column(Date)
-	point = GeometryColumn(Point(3))
+	point = GeometryColumn(Point(3,96))
 	
 	def __repr__(self):
 		return "<Workspace('%s','%s')>" % (self.id, self.name)

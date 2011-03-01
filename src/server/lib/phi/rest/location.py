@@ -1,5 +1,9 @@
 from bottle import *
+from shapely.geometry import Point
+from geoalchemy import WKTSpatialElement
+
 import json
+
 import phi.core.model as model
 import phi.core.repository as repo
 import phi.rest.vo as vo
@@ -20,18 +24,23 @@ def read(id):
 @post('location')
 def create():
 	o = json.load(request.body)
-	user_name = o["userName"]
-	name = o["name"]
-	description = o["description"]
-	point = o["point"]
-	favorite = o["favorite"]
+	user_name = o['userName']
+	name = o['name']
+	description = o['description']
+	point = o['point']
+	favorite = o['favorite']
 	
 	l = model.Location()
 	l.name = name
 	l.description = description
 	l.favorite = favorite
-	#point = "" ??
-
-	r = repo.Location().create(l)
-	return True
-
+	l.point = WKTSpatialElement(Point(point['x'], point['y']).wkt,96)
+	
+	repo.Location().create(l)
+	
+	repoUser = repo.User()
+	user = repoUser.read(user_name)
+	user.locations.append(l)
+	repoUser.update(user)
+	
+	return vo.ext_form(True)
