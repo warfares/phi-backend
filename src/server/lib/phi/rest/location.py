@@ -8,13 +8,19 @@ import phi.core.model as model
 import phi.core.repository as repo
 import phi.rest.vo as vo
 
+
+import phi.core.session_helper as session_helper
+session = session_helper.create_session()
+
+
 #Collections 
 
 @route('location/all')
 def all():
-	locations = repo.Location().all()
+	locations = repo.Location(session=session).all()
 	o = map(lambda l: vo.location(l), locations)
-	
+	session.close()
+	session.remove()
 	return vo.collection(o, len(o))
 
 #CRUD
@@ -34,20 +40,22 @@ def create():
 	l.favorite = favorite
 	l.point = WKTSpatialElement(Point(point['x'], point['y']).wkt,96)
 	
-	repo.Location().create(l)
+	repo.Location(session=session).create(l)
 	
-	repo_user = repo.User()
+	repo_user = repo.User(session=session)
 	user = repo_user.read(user_name)
 	user.locations.append(l)
 	repo_user.update(user)
-	
+	session.close()
+	session.remove()
 	return vo.success(True)
 
 @route('location/:id')
 def read(id):
-	l = repo.Location().read(id)
+	l = repo.Location(session=session).read(id)
 	o = vo.location(l) if l else ''
-	
+	session.close()
+	session.remove()
 	return o
 	
 @put('location')
@@ -57,18 +65,22 @@ def update():
 	name = o['name']
 	description = o['description']
 
-	repo_location = repo.Location()
+	repo_location = repo.Location(session=session)
 	l = repo_location.read(id)
+	l.name = name
+	l.description = description
 	repo_location.update(l)
-	
+	session.close()
+	session.remove()
 	return vo.success(True)
 
 @delete('location/:id')
 def delete(id):
-	repo_location = repo.Location()
+	repo_location = repo.Location(session=session)
 	l = repo_location.read(id)
 	repo_location.delete(l)
-	
+	session.close()
+	session.remove()
 	return vo.success(True)
 
 @post('location/favorite')
@@ -77,9 +89,10 @@ def favorite():
 	id = o['id']
 	favorite = o['favorite']
 
-	repo_location = repo.Location()
+	repo_location = repo.Location(session=session)
 	l = repo_location.read(id)
 	l.favorite = favorite
 	repo_location.create(l)
-	
+	session.close()
+	session.remove()
 	return vo.success(True)

@@ -4,15 +4,18 @@ import json
 import phi.core.repository as repo
 import phi.rest.vo as vo
 
+import phi.core.session_helper as session_helper
+session = session_helper.create_session()
+
 @route('user/all')
 def all():
-	users = repo.User().all()
+	users = repo.User(session=session).all()
 	o = map(lambda u: vo.user_base(u), users)
 	return vo.collection(o, len(o))
 
 @route('user/:id')
 def read(id):
-	u = repo.User().read(id)
+	u = repo.User(session=session).read(id)
 	o = vo.user(u) if u else ''
 	return o
 
@@ -27,7 +30,9 @@ def login():
 	o = json.load(request.body)
 	user_name = o["user_name"]
 	password = o["password"]
-	u = repo.User().read(user_name)
+	u = repo.User(session=session).read(user_name)
+	session.close()
+	session.remove()
 	#todo check password
 	return {'user':vo.user_base(u), 'status':True} if u else {'user':user_name, 'status':False}
 
@@ -39,23 +44,27 @@ def get_locations():
 	start = int(request.GET.get('start'))
 	limit = int(request.GET.get('limit'))
 
-	locations = repo.User().read(user_name).locations
+	locations = repo.User(session=session).read(user_name).locations
 	total = len(locations)
 
 	#paging by code (discrete values)
 	if (total - start < limit):
 		limit = (total - start)
 
-	locations = repo.User().read(user_name).locations[start:limit]
+	locations = repo.User(session=session).read(user_name).locations[start:limit]
 	o = map(lambda l: vo.location(l), locations)
+	session.close()
+	session.remove()
 	return vo.collection(o, total)
 
 @route('user/getfavlocations')
 def get_favlocations():
 	user_name = request.GET.get('userName')	
-	locations = repo.User().read(user_name).locations
+	locations = repo.User(session=session).read(user_name).locations
 	locations = filter(lambda l: l.favorite, locations)
 	o = map(lambda l: vo.location(l), locations)
+	session.close()
+	session.remove()
 	return vo.collection(o, len(o))
 
 
@@ -63,13 +72,15 @@ def get_favlocations():
 @route('user/getlayers')
 def get_layer():
 	user_name = request.GET.get('userName')
-	nodes = repo.User().read(user_name).nodes
+	nodes = repo.User(session=session).read(user_name).nodes
 	layers = map(lambda n: n.layer,filter(lambda n: n.leaf, nodes))
 	
 	#sort
 	layers = sorted(layers, key=lambda l: l.title)
 	
 	o = map(lambda l: vo.layer(l), layers)
+	session.close()
+	session.remove()
 	return vo.collection(o, len(o))
 	
 
@@ -83,7 +94,7 @@ def search_layer():
 	position = request.GET.get('position')
 	type = request.GET.get('type')
 
-	nodes = repo.User().read(user_name).nodes
+	nodes = repo.User(session=session).read(user_name).nodes
 	layers = map(lambda n: n.layer,filter(lambda n: n.leaf, nodes))
 
 	#filter type
@@ -107,21 +118,27 @@ def search_layer():
 	limit = start + limit
 
 	o = map(lambda l: vo.layer(l), layers[start:limit])
+	session.close()
+	session.remove()
 	return vo.collection(o, total)
 
 @route('user/getnodes')
 def get_nodes():
 	user_name = request.GET.get('userName')
-	nodes = repo.User().read(user_name).nodes
+	nodes = repo.User(session=session).read(user_name).nodes
 	
 	tree = vo.ExtNode(0,'Minera los Pelambres')
 	vo.build_tree(tree, nodes)
+	session.close()
+	session.remove()
 	return tree.__dict__
 
 @route('user/getrasters')
 def get_rasters():
 	user_name = request.GET.get('userName')
-	rasters = repo.User().read(user_name).rasters
+	rasters = repo.User(session=session).read(user_name).rasters
 	rasters = sorted(rasters, key=lambda r:r.order)
 	o = map(lambda r: vo.raster(r), rasters)
+	session.close()
+	session.remove()
 	return vo.collection(o, len(o))

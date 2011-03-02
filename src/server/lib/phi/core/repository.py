@@ -5,16 +5,13 @@ repository.py
 
 Created by Rodolfo Barriga
 """
-
-import phi.core.session_helper as session_helper
 import phi.core.model as model
 
 class Base:
 
-	session = session_helper.create_session()
-
-	def __init__(self, entity):
+	def __init__(self, entity, session = ''):
 		self.entity = entity
+		self.session = session
 
 	def all(self):
 		list = self.session.query(self.entity).all()
@@ -39,17 +36,20 @@ class Base:
 
 
 class User(Base):
-	def __init__(self):
+	def __init__(self, session):
+		self.session = session
 		self.entity = model.User
 
 
 class Location(Base):
-	def __init__(self):
+	def __init__(self, session):
+		self.session = session
 		self.entity = model.Location
 
 
 class Workspace(Base):
-	def __init__(self):
+	def __init__(self, session):
+		self.session = session
 		self.entity = model.Workspace
 		
 	def get_by_owner(self, user_name):
@@ -57,25 +57,30 @@ class Workspace(Base):
 
 
 class Node(Base):
-	def __init__(self):
+	def __init__(self, session):
+		self.session = session
 		self.entity = model.Node
 
 
 class Layer(Base):
-	def __init__(self):
+	def __init__(self, session):
+		self.session = session
 		self.entity = model.Layer
 
 
 class Raster(Base):
-	def __init__(self):
+	def __init__(self, session):
+		self.session = session
 		self.entity = model.Raster
 
 
 class Role(Base):
-	def __init__(self):
+	def __init__(self, session):
+		self.session = session
 		self.entity = model.Role
 
 
 class Group(Base):
-	def __init__(self):
+	def __init__(self, session):
+		self.session = session
 		self.entity = model.Group
