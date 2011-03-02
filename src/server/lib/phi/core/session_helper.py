@@ -5,7 +5,9 @@ session_helper.py
 
 Created by Rodolfo Barriga 
 """
-from sqlalchemy import *
+from sqlalchemy import orm
+from sqlalchemy import create_engine
+
 from sqlalchemy.orm import sessionmaker
 
 def create_main_engine():
@@ -14,6 +16,12 @@ def create_main_engine():
 	return engine
 
 def create_session():
+	
+	# Set up the session
 	engine = create_main_engine()
-	Session = sessionmaker(bind=engine)
-	return Session()
+	sm = orm.sessionmaker(bind=engine, autoflush=True, expire_on_commit=True)
+	
+	#scope_session different session is used for each thread 
+	#so that every request can have its own access to the database.
+	session = orm.scoped_session(sm)
+	return session
