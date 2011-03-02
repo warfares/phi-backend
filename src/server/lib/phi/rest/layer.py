@@ -5,7 +5,7 @@ import phi.core.repository as repo
 import phi.rest.vo as vo
 
 
-@route('user/all')
+@route('layer/all')
 def all():
 	layers = repo.Layer().all()
 	o = map(lambda l: vo.layer(l), layers)
