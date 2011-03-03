@@ -9,7 +9,6 @@ import phi.rest as module
 import phi.rest.vo as vo
 
 
-
 #Collections
 @route('location/all')
 @module.rest_method
@@ -35,12 +34,12 @@ def create():
 	l.favorite = favorite
 	l.point = WKTSpatialElement(Point(point['x'], point['y']).wkt,96)
 	
-	repo.Location(session=module.session).create(l)
+	repo.Location(session=module.session).create_update(l)
 	
 	repo_user = repo.User(session=module.session)
 	user = repo_user.read(user_name)
 	user.locations.append(l)
-	repo_user.update(user)
+	repo_user.create_update(user)
 	return vo.success(True)
 
 @route('location/:id')
@@ -62,7 +61,7 @@ def update():
 	l = repo_location.read(id)
 	l.name = name
 	l.description = description
-	repo_location.update(l)
+	repo_location.create_update(l)
 	return vo.success(True)
 
 @delete('location/:id')
@@ -83,5 +82,5 @@ def favorite():
 	repo_location = repo.Location(session=module.session)
 	l = repo_location.read(id)
 	l.favorite = favorite
-	repo_location.create(l)
+	repo_location.create_update(l)
 	return vo.success(True)

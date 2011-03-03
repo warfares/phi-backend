@@ -6,12 +6,30 @@ import phi.rest as module
 import phi.rest.vo as vo
 
 
+#Collections
 @route('user/all')
 @module.rest_method
 def all():
 	users = repo.User(session=module.session).all()
 	o = map(lambda u: vo.user_base(u), users)
 	return vo.collection(o, len(o))
+
+#CRUD
+@post('user')
+@module.rest_method
+def create():
+	o = json.load(request.body)
+	user_name = o['userName']
+	name = o['name']
+	#TODO all properties
+	
+	u = model.User()
+	u.user_name = user_name
+	u.name = name
+	#TODO all properties
+	
+	repo.User(session=module.session).create_update(u)
+	return vo.success(True)
 
 @route('user/:id')
 @module.rest_method
@@ -20,10 +38,30 @@ def read(id):
 	o = vo.user(u) if u else ''
 	return o
 
-#delete
-#delete collection 
-#create
-#update
+@put('user')
+@module.rest_method
+def update():
+	o = json.load(request.body)
+	user_name = o['user_name']
+	name = o['name']
+	#TODO all properties
+
+	repo_user = repo.User(session=module.session)
+	u = repo_user.read(user_name)
+	u.name = name
+	#TODO all properties
+	
+	repo_user.create_update(u)
+	return vo.success(True)
+
+@delete('user/:id')
+@module.rest_method
+def delete(id):
+	repo_user = repo.User(session=module.session)
+	u = repo_user.read(id)
+	repo_user.delete(u)
+	return vo.success(True)
+
 
 #TODO LDAP access... password auth ...
 @post('user/login')
@@ -33,11 +71,11 @@ def login():
 	user_name = o["user_name"]
 	password = o["password"]
 	u = repo.User(session=module.session).read(user_name)
-	#todo check password
+	#TODO check password
 	return {'user':vo.user_base(u), 'status':True} if u else {'user':user_name, 'status':False}
 
-#Collection #TODO validate exeption !! user ...TODO: fix paggin 
 
+#TODO: fix paggin
 @route('user/getlocations')
 @module.rest_method
 def get_locations():

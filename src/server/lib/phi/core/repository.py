@@ -20,12 +20,8 @@ class Base:
 	def read(self, id):
 		return self.session.query(self.entity).get(id)
 
-	def create(self, obj):
+	def create_update(self, obj):
 		self.session.add(obj)
-		self.session.commit()
-		return True
-		
-	def update(self, obj):
 		self.session.commit()
 		return True
 		

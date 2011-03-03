@@ -6,12 +6,12 @@ import sys
 LOG_FILENAME = '/log/debug.log'
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
 
-session = session_helper.create_session()
-
+session = session_helper.create_session() 
 
 def rest_method(f, *args, **kwargs):
 	def wrapper(*args, **kwargs):
 		
+		#logger
 		rid = random.randint(0,10000)
 		logging.debug('BEGIN rest async call:#' + str(rid) + ' ' + f.__name__)
 		
