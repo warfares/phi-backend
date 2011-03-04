@@ -5,6 +5,8 @@ import phi.core.repository as repo
 import phi.rest as module
 import phi.rest.vo as vo
 
+from util import encode_password
+
 
 #Collections
 @route('user/all')
@@ -63,16 +65,23 @@ def delete(id):
 	return vo.success(True)
 
 
-#TODO LDAP access... password auth ...
+#TODO LDAP access...
 @post('user/login')
 @module.rest_method
 def login():
 	o = json.load(request.body)
 	user_name = o["user_name"]
 	password = o["password"]
+	
 	u = repo.User(session=module.session).read(user_name)
-	#TODO check password
-	return {'user':vo.user_base(u), 'status':True} if u else {'user':user_name, 'status':False}
+	
+	if(not u):
+		return vo.login_success(None,False,'user doesnt exist')
+	
+	if(u.password != encode_password(password)):
+		return vo.login_success(None,False,'wrong password')
+
+	return vo.login_success(vo.user_base(u),True)
 
 
 #TODO: fix paggin
