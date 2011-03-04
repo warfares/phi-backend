@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
-"""
+'''
 model.py
 
 Created by Rodolfo Barriga
-"""
-
+'''
 from sqlalchemy import Table, Column, ForeignKey, String, Integer, Boolean, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
@@ -52,6 +51,8 @@ class User(Base):
 	last_name = Column(String)
 	email = Column(String)
 	enabled = Column(String)
+	password = Column(String)
+	
 	nodes = relationship('Node', secondary=user_nodes, backref='app_user')
 	rasters = relationship('Raster', secondary=user_rasters, backref='app_user')
 	locations = relationship('Location', secondary=user_locations, backref='app_user')
