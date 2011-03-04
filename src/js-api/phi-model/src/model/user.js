@@ -58,7 +58,7 @@ Phi.model.User = Ext.extend(Phi.model.Entity, {
 			success: function (response, options) {
 
 				var o = Ext.util.JSON.decode(response.responseText);
-				var status = o.status;
+				var status = o.success;
 				var user = o.user;
 
 				this.fireEvent('login', status, credentials, user);
