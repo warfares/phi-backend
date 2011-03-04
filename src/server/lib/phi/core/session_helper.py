@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
-"""
+'''
 session_helper.py
 
 Created by Rodolfo Barriga 
-"""
+'''
 from sqlalchemy import orm
 from sqlalchemy import create_engine
 
