@@ -1,5 +1,5 @@
-from shapely.wkb import loads
-# vo-> objects python to JS notation 
+''' vo-> objects python to JS notation '''
+from shapely.wkb import loads 
 
 #general purpose 
 def collection(entities,total):
@@ -21,6 +21,14 @@ def success(success,error=''):
 	vo = {
 		'success': success,
 	    'errorMsg': error 
+	}
+	return vo
+
+def login_success(user,success, error=''):
+	vo = {
+		'user': user,
+		'success': success,
+	    'errorMsg': error
 	}
 	return vo
 
