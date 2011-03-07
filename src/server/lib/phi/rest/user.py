@@ -101,7 +101,7 @@ def setpassword():
 
 	return vo.success(True)
 
-#TODO: fix paggin
+#User Locations
 @route('user/getlocations')
 @module.rest_method
 def get_locations():
@@ -110,11 +110,10 @@ def get_locations():
 	limit = int(request.GET.get('limit'))
 
 	locations = repo.User(session=module.session).read(user_name).locations
-	total = len(locations)
 
 	#paging by code (discrete values)
-	if (total - start < limit):
-		limit = (total - start)
+	total = len(locations)
+	limit = start + limit
 
 	locations = repo.User(session=module.session).read(user_name).locations[start:limit]
 	o = map(lambda l: vo.location(l), locations)
@@ -130,7 +129,7 @@ def get_favlocations():
 	return vo.collection(o, len(o))
 
 
-#Layers
+#User Layers
 @route('user/getlayers')
 @module.rest_method
 def get_layer():
@@ -144,7 +143,6 @@ def get_layer():
 	return vo.collection(o, len(o))
 	
 
-#search by code !!
 @route('user/searchlayers')
 @module.rest_method
 def search_layer():
@@ -183,6 +181,7 @@ def search_layer():
 	module.session.remove()
 	return vo.collection(o, total)
 
+#User Nodes
 @route('user/getnodes')
 @module.rest_method
 def get_nodes():
@@ -193,6 +192,7 @@ def get_nodes():
 	vo.build_tree(tree, nodes)
 	return tree.__dict__
 
+#User Raster
 @route('user/getrasters')
 @module.rest_method
 def get_rasters():
