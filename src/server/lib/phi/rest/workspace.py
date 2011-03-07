@@ -11,13 +11,20 @@ import phi.rest as module
 import phi.rest.vo as vo
 
 
-
 @route('workspace/get_by_owner')
 @module.rest_method
 def get_by_owner():
-	workspaces = repo.Workspace(session=module.session).get_by_owner('ldapellipse')
-	o = map(lambda ws: vo.workspace(ws), workspaces)
-	return vo.collection(o, len(o))
+	user_name = request.GET.get('userName')
+	start = int(request.GET.get('start'))
+	limit = int(request.GET.get('limit'))
+	
+	workspaces = repo.Workspace(session=module.session).get_by_owner(user_name)
+	#paging by code (discrete values)
+	total = len(workspaces)
+	limit = start + limit
+	
+	o = map(lambda ws: vo.workspace(ws), workspaces[start:limit])
+	return vo.collection(o, total)
 
 
 #CRUD
