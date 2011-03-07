@@ -21,6 +21,7 @@ Phi.UriTemplate = {
 	users: '/user/all',
 	user: '/user',
 	userLogin: '/user/login',
+	userSetPassword: '/user/setpassword',
 	
 	//user locations
 	userGetLocations: '/user/getlocations',

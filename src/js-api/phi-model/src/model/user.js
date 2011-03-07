@@ -27,9 +27,25 @@ Phi.model.User = Ext.extend(Phi.model.Entity, {
 			* @event login Event declaration
 			*/
 			'login',
+			/**
+			* @event setpassword Event declaration
+			*/
+			'setpassword',
+			/**
+			* @event getfavoriteslocations Event declaration
+			*/
 			'getfavoriteslocations',
+			/**
+			* @event getnodes Event declaration
+			*/
 			'getnodes',
+			/**
+			* @event getrasters Event declaration
+			*/
 			'getrasters',
+			/**
+			* @event getlayers Event declaration
+			*/
 			'getlayers'
 		);
 		Phi.model.User.superclass.initComponent.call(config);
@@ -43,7 +59,7 @@ Phi.model.User = Ext.extend(Phi.model.Entity, {
 	login: function (userName, password) {
 
 		var credentials = {
-			user_name: userName,
+			userName: userName,
 			password: password
 		}
 
@@ -62,6 +78,31 @@ Phi.model.User = Ext.extend(Phi.model.Entity, {
 				var user = o.user;
 
 				this.fireEvent('login', status, credentials, user);
+			}
+		});
+	}
+	,
+	/**
+	* User change password
+	* @param {String} userName user name (key)
+	* @param {String} password, new password
+	* */
+	setPassword: function(userName, password) {
+
+		var o = {
+			userName: userName,
+			password: password
+		}
+
+		Ext.Ajax.request({
+			url: Phi.UriTemplate.getUri('userSetPassword'),
+			method: 'POST',
+			headers: { 'Content-Type': 'text/json' },
+			jsonData: o,
+			scope: this,
+			success: function (response, options) {
+				var response = Ext.util.JSON.decode(response.responseText);
+				this.fireEvent('setpassword', response);
 			}
 		});
 	}

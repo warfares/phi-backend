@@ -23,12 +23,14 @@ def create():
 	o = json.load(request.body)
 	user_name = o['userName']
 	name = o['name']
-	#TODO all properties
+	last_name = o['lastName']
+	email = o['email']
 	
 	u = model.User()
 	u.user_name = user_name
 	u.name = name
-	#TODO all properties
+	u.last_name = last_name
+	u.email = email
 	
 	repo.User(session=module.session).create_update(u)
 	return vo.success(True)
@@ -44,14 +46,16 @@ def read(id):
 @module.rest_method
 def update():
 	o = json.load(request.body)
-	user_name = o['user_name']
+	user_name = o['userName']
 	name = o['name']
-	#TODO all properties
+	last_name = o['lastName']
+	email = o['email']
 
 	repo_user = repo.User(session=module.session)
 	u = repo_user.read(user_name)
 	u.name = name
-	#TODO all properties
+	u.last_name = last_name
+	u.email = email
 	
 	repo_user.create_update(u)
 	return vo.success(True)
@@ -70,7 +74,7 @@ def delete(id):
 @module.rest_method
 def login():
 	o = json.load(request.body)
-	user_name = o["user_name"]
+	user_name = o["userName"]
 	password = o["password"]
 	
 	u = repo.User(session=module.session).read(user_name)
@@ -83,6 +87,19 @@ def login():
 
 	return vo.login_success(vo.user_base(u),True)
 
+
+@post('user/setpassword')
+@module.rest_method
+def setpassword():
+	o = json.load(request.body)
+	user_name = o["userName"]
+	password = o["password"]
+	repo_user = repo.User(session=module.session)
+	u = repo_user.read(user_name)
+	u.password = encode_password(password)
+	repo_user.create_update(u)
+
+	return vo.success(True)
 
 #TODO: fix paggin
 @route('user/getlocations')
