@@ -115,8 +115,7 @@ def get_locations():
 	total = len(locations)
 	limit = start + limit
 
-	locations = repo.User(session=module.session).read(user_name).locations[start:limit]
-	o = map(lambda l: vo.location(l), locations)
+	o = map(lambda l: vo.location(l), locations[start:limit])
 	return vo.collection(o, total)
 
 @route('user/getfavlocations')
