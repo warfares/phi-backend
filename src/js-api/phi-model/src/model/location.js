@@ -25,6 +25,11 @@ Phi.model.Location = Ext.extend(Phi.model.Entity, {
 		Phi.model.Location.superclass.initComponent.call(config);
 	}
 	,
+	/**
+	* Toggle location status.
+	* @param {String} id, location id (key)
+	* @param {Bool} favorite, location status
+	* */
 	favorite: function (id, favorite) {
 		
 		var o = {
