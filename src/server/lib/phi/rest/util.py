@@ -8,12 +8,6 @@ SALT = '+GNH}y<.vbgdayruTs1GXN2SK)/&%,$keu@jrsgnf:bDGSncfth4ayruykdHMnF' \
 '=FZmx|ta;[Philosophy]yH9hiDA(./&/*ga~hyru5SytrhgD&(/IUlñ[' \
 'JHGYUKTR~JbD#($CV7mMu-BNMJ¿mcvER{WER&%/(¨sFG!¡#?HE¡RUy>'
 
-#filter const
-CONTAIN = '0'
-START = '1'
-END = '2'
-EQUAL = '3'
-
 
 def encode_password(passw):
 	'''SHA 256 base 64 encoded password'''
@@ -22,6 +16,8 @@ def encode_password(passw):
 	return encoded
 	
 def collection_filter(position, pattern, attribute, collection):
+	#filter const
+	CONTAIN, START, END, EQUAL = '0','1','2','3'
 		
 	f = dict()
 	f[CONTAIN] = lambda o: getattr(o, attribute).find(pattern) != -1
