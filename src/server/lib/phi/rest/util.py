@@ -8,6 +8,12 @@ SALT = '+GNH}y<.vbgdayruTs1GXN2SK)/&%,$keu@jrsgnf:bDGSncfth4ayruykdHMnF' \
 '=FZmx|ta;[Philosophy]yH9hiDA(./&/*ga~hyru5SytrhgD&(/IUlñ[' \
 'JHGYUKTR~JbD#($CV7mMu-BNMJ¿mcvER{WER&%/(¨sFG!¡#?HE¡RUy>'
 
+#filter const
+CONTAIN = '0'
+START = '1'
+END = '2'
+EQUAL = '3'
+
 
 def encode_password(passw):
 	'''SHA 256 base 64 encoded password'''
@@ -16,13 +22,11 @@ def encode_password(passw):
 	return encoded
 	
 def collection_filter(position, pattern, attribute, collection):
-	if(position == '0' and pattern != '' ):
-		collection = filter(lambda o: getattr(o, attribute).find(pattern) != -1, collection) 
-	if(position == '1'):
-		collection = filter(lambda o: getattr(o, attribute).startswith(pattern), collection)
-	if(position == '2'):
-		collection = filter(lambda o: getattr(o, attribute).endswith(pattern), collection)
-	if(position == '3'):
-		collection = filter(lambda o: getattr(o, attribute).title == pattern, collection)
-	
-	return collection 
+		
+	f = dict()
+	f[CONTAIN] = lambda o: getattr(o, attribute).find(pattern) != -1
+	f[START] = lambda o: getattr(o, attribute).startswith(pattern)
+	f[END] = lambda o: getattr(o, attribute).endswith(pattern)
+	f[EQUAL] = lambda o: getattr(o, attribute).title == pattern
+
+	return filter(f[position], collection)
