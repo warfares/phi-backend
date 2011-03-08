@@ -27,6 +27,9 @@ Phi.UriTemplate = {
 	userGetLocations: '/user/getlocations',
 	userGetFavLocations: '/user/getfavlocations',
 
+	//user workspace 
+	userSearchWorkspace: '/user/searchworkspace',
+	
 	//user layers 
 	userGetLayers: '/user/getlayers',
 	userSearchLayer : '/user/searchlayers',
