@@ -4,6 +4,7 @@ import json
 import phi.core.repository as repo
 import phi.rest as module
 import phi.rest.vo as vo
+import phi.rest.util as util
 
 from util import encode_password
 
@@ -127,6 +128,34 @@ def get_favlocations():
 	o = map(lambda l: vo.location(l), locations)
 	return vo.collection(o, len(o))
 
+#User Workspace
+@route('user/searchworkspace')
+@module.rest_method
+def search_workspace():
+	user_name = request.GET.get('userName')
+	start = int(request.GET.get('start'))
+	limit = int(request.GET.get('limit'))
+	name_pattern = request.GET.get('namePattern')
+	name_position = request.GET.get('namePosition')
+	user_pattern = request.GET.get('userPattern')
+	user_position = request.GET.get('userPosition')
+	
+	workspaces = repo.User(session=module.session).read(user_name).workspaces
+	
+	#filter owner
+	workspaces = util.collection_filter(user_position, user_pattern, 'user_name', workspaces)
+	
+	#filter name
+	workspaces = util.collection_filter(name_position, name_pattern, 'name', workspaces)
+
+	#sort
+	workspaces = sorted(workspaces, key=lambda l: l.name)
+	
+	total = len(workspaces)
+	limit = start + limit
+	
+	o = map(lambda ws: vo.workspace(ws), workspaces[start:limit])
+	return vo.collection(o, total)
 
 #User Layers
 @route('user/getlayers')
@@ -160,14 +189,7 @@ def search_layer():
 		layers = filter(lambda l: l.type == type, layers)
 	
 	#filter title
-	if(position == '0' and pattern != '' ):
-		layers = filter(lambda l: l.title.find(pattern) != -1, layers) 
-	if(position == '1'):
-		layers = filter(lambda l: l.title.startswith(pattern), layers)
-	if(position == '2'):
-		layers = filter(lambda l: l.title.endswith(pattern), layers)
-	if(position == '3'):
-		layers = filter(lambda l: l.title == pattern, layers)
+	layers = util.collection_filter(position, pattern, 'title', layers)
 
 	#sort
 	layers = sorted(layers, key=lambda l: l.title)
@@ -176,8 +198,6 @@ def search_layer():
 	limit = start + limit
 
 	o = map(lambda l: vo.layer(l), layers[start:limit])
-	module.session.close()
-	module.session.remove()
 	return vo.collection(o, total)
 
 #User Nodes
