@@ -16,6 +16,7 @@ def encode_password(passw):
 	return encoded
 	
 def collection_filter(position, pattern, attribute, collection):
+	'''Filter a object collection by string attribute'''
 	#filter const
 	CONTAIN, START, END, EQUAL = '0','1','2','3'
 		
