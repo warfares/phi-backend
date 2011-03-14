@@ -43,6 +43,8 @@ user_roles = Table('app_user_role', Base.metadata,
 	Column('app_role_id', Integer, ForeignKey('app_role.id'))
 )
 
+
+
 class User(Base):
 	__tablename__ = 'app_user'
 
@@ -129,6 +131,7 @@ class Workspace(Base):
 	user_name = Column(String)
 	date = Column(Date)
 	point = GeometryColumn(Point(3,96))
+	users = relationship('User', secondary=user_workspaces, backref='app_workspace')
 	
 	def __repr__(self):
 		return "<Workspace('%s','%s')>" % (self.id, self.name)
