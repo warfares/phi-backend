@@ -26,7 +26,6 @@ def get_by_owner():
 	o = map(lambda ws: vo.workspace(ws), workspaces[start:limit])
 	return vo.collection(o, total)
 
-
 #CRUD
 @post('workspace')
 @module.rest_method
@@ -101,3 +100,21 @@ def delete(id):
 	ws = repo_ws.read(id)
 	repo_ws.delete(ws)
 	return vo.success(True)
+
+
+@route('workspace/getusers')
+@module.rest_method
+def get_users():
+	id = int(request.GET.get('id'))
+	start = int(request.GET.get('start'))
+	limit = int(request.GET.get('limit'))
+
+	workspace = repo.Workspace(session=module.session).read(id)
+	users = workspace.users
+	
+	#paging by code (discrete values)
+	total = len(users)
+	limit = start + limit
+
+	o = map(lambda u: vo.user(u), users[start:limit])
+	return vo.collection(o, total)
