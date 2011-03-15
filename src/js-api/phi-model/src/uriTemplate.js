@@ -49,7 +49,8 @@ Phi.UriTemplate = {
 	
 	//workspace service
 	workspace: '/workspace',
-	workspaceGetByOwner: '/workspace/get_by_owner',    
+	workspaceGetByOwner: '/workspace/get_by_owner',  
+	workspaceGetUsers: '/workspace/getusers',  
 
 	getUri: function(action, option) {
 		var hostname = 'http://' + window.location.hostname + '/';
