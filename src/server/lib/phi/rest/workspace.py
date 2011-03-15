@@ -11,7 +11,7 @@ import phi.rest as module
 import phi.rest.vo as vo
 
 
-@route('workspace/get_by_owner')
+@route('workspace/getbyowner')
 @module.rest_method
 def get_by_owner():
 	user_name = request.GET.get('userName')
@@ -125,13 +125,13 @@ def get_users():
 def add_users():
 	o = json.load(request.body)
 	id = o["id"]
-	user_names = o["user_names"]
-	
+	user_names = o["userNames"]
+
 	repo_workspace = repo.Workspace(session=module.session)
 	repo_user = repo.User(session=module.session)
-	
+
 	workspace = repo_workspace.read(id)
-	
+
 	def add(user_name):
 		u = repo_user.read(user_name)
 		workspace.users.append(u)
@@ -147,7 +147,7 @@ def add_users():
 def remove_users():
 	o = json.load(request.body)
 	id = o["id"]
-	user_names = o["user_names"]
+	user_names = o["userNames"]
 
 	repo_workspace = repo.Workspace(session=module.session)
 	repo_user = repo.User(session=module.session)
