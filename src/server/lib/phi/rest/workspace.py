@@ -118,3 +118,49 @@ def get_users():
 
 	o = map(lambda u: vo.user(u), users[start:limit])
 	return vo.collection(o, total)
+	
+
+@post('workspace/addusers')
+@module.rest_method
+def add_users():
+	o = json.load(request.body)
+	id = o["id"]
+	user_names = o["user_names"]
+	
+	repo_workspace = repo.Workspace(session=module.session)
+	repo_user = repo.User(session=module.session)
+	
+	workspace = repo_workspace.read(id)
+	
+	def add(user_name):
+		u = repo_user.read(user_name)
+		workspace.users.append(u)
+		return True
+
+	map(lambda user_name: add(user_name), user_names)
+	
+	repo_workspace.create_update(workspace)
+	return vo.success(True)
+
+@post('workspace/removeusers')
+@module.rest_method
+def remove_users():
+	o = json.load(request.body)
+	id = o["id"]
+	user_names = o["user_names"]
+
+	repo_workspace = repo.Workspace(session=module.session)
+	repo_user = repo.User(session=module.session)
+
+	workspace = repo_workspace.read(id)
+
+	def remove(user_name):
+		u = repo_user.read(user_name)
+		if(u in workspace.users):
+			workspace.users.remove(u)
+		return True
+
+	map(lambda user_name: remove(user_name), user_names)
+
+	repo_workspace.create_update(workspace)
+	return vo.success(True)
