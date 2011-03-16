@@ -149,3 +149,21 @@ def workspace(o):
 		'point': point(p)
 	}
 	return vo
+
+#role
+def role(o):
+	vo = {
+	'id':o.id,
+	'name':o.name,
+	'description':o.description
+	}
+	return vo
+
+#group
+def group(o):
+	vo = {
+	'id':o.id,
+	'name':o.name,
+	'description':o.description
+	}
+	return vo
