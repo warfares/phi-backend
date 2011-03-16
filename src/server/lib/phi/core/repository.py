@@ -35,8 +35,14 @@ class User(Base):
 	def __init__(self, session):
 		self.session = session
 		self.entity = model.User
-
-
+	
+	#TODO
+	def search(self, user_name):
+		query = self.session.query(self.entity) \
+		.filter(self.entity.user_name.like(user_name)) \
+		.all()
+		return query
+	
 class Location(Base):
 	def __init__(self, session):
 		self.session = session
