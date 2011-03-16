@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
+'''
+repository.py
+
+Created by Rodolfo Barriga
+'''
 from hashlib import sha256
 import base64
 import hmac
@@ -30,6 +35,8 @@ def collection_filter(position, pattern, attribute, collection):
 
 def like_filter(position, pattern):
 	''' build (like op) template '''
+	
+	if(pattern == ''): return '%'
 	
 	#filter const
 	CONTAIN, START, END, EQUAL = '0','1','2','3'
