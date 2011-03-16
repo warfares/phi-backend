@@ -27,3 +27,17 @@ def collection_filter(position, pattern, attribute, collection):
 	f[EQUAL] = lambda o: getattr(o, attribute).title == pattern
 
 	return filter(f[position], collection)
+
+def like_filter(position, pattern):
+	''' build (like op) template '''
+	
+	#filter const
+	CONTAIN, START, END, EQUAL = '0','1','2','3'
+	
+	f = dict()
+	f[CONTAIN] = '%' + pattern + '%'
+	f[START] = pattern + '%'
+	f[END] = '%' + pattern
+	f[EQUAL] =  pattern
+	
+	return f[position]
