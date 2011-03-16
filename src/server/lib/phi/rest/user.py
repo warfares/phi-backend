@@ -8,8 +8,32 @@ import phi.rest.util as util
 
 from util import encode_password
 
-
 #Collections
+
+#TODO Search Users direct from DB.
+@route('user/search')
+@module.rest_method
+def search():
+	
+	user_name = request.GET.get('userName')
+	
+	start = int(request.GET.get('start'))
+	limit = int(request.GET.get('limit'))
+	#all criteria parameters... !!
+	
+	repo_user = repo.User(session=module.session)
+	
+	#build or fix criteria 
+	
+	#TOTAL
+	#repo count criteria.
+	total = 10
+	
+	users = repo_user.search(user_name)
+	o = map(lambda u: vo.user_base(u), users)
+	return vo.collection(o, total)
+
+
 @route('user/all')
 @module.rest_method
 def all():
