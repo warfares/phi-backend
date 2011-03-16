@@ -22,15 +22,16 @@ Phi.UriTemplate = {
 	user: '/user',
 	userLogin: '/user/login',
 	userSetPassword: '/user/setpassword',
+	userSearch: '/user/search',
 	
 	//user locations
 	userGetLocations: '/user/getlocations',
 	userGetFavLocations: '/user/getfavlocations',
 
-	//user workspace 
+	//user workspace
 	userSearchWorkspace: '/user/searchworkspace',
 	
-	//user layers 
+	//user layers
 	userGetLayers: '/user/getlayers',
 	userSearchLayer : '/user/searchlayers',
 
