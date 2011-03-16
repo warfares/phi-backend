@@ -15,21 +15,28 @@ from util import encode_password
 @module.rest_method
 def search():
 	
-	user_name = request.GET.get('userName')
+	user_name_pattern = request.GET.get('userNamePattern')
+	user_name_position = request.GET.get('userNamePosition')
+	name_pattern = request.GET.get('namePattern')
+	name_position = request.GET.get('namePosition')
+	last_name_pattern = request.GET.get('lastNamePattern')
+	last_name_position = request.GET.get('lastNamePosition')
+	group_id = request.GET.get('groupId')
+	role_id = request.GET.get('roleId')
+	
 	
 	start = int(request.GET.get('start'))
 	limit = int(request.GET.get('limit'))
-	#all criteria parameters... !!
-	
+
 	repo_user = repo.User(session=module.session)
 	
-	#build or fix criteria 
+	user_name = util.like_filter(user_name_position, user_name_pattern)
+	name  = util.like_filter(name_position, name_pattern)
+	last_name  = util.like_filter(last_name_position, last_name_pattern)
 	
-	#TOTAL
-	#repo count criteria.
-	total = 10
+	total = repo_user.search_count(user_name, name, last_name, group_id, role_id)
+	users = repo_user.search(user_name, name, last_name, group_id, role_id, start, limit)
 	
-	users = repo_user.search(user_name)
 	o = map(lambda u: vo.user_base(u), users)
 	return vo.collection(o, total)
 
