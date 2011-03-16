@@ -55,7 +55,15 @@ Phi.UriTemplate = {
 	
 	workspaceAddUsers: '/workspace/addusers',  
 	workspaceRemoveUsers: '/workspace/removeusers',
-
+	
+	//group 
+	group: '/group',
+	groups: '/group/all',
+	
+	//role
+	role: '/role',
+	roles: '/role/all',
+	
 	getUri: function(action, option) {
 		var hostname = 'http://' + window.location.hostname + '/';
 		return hostname + Phi.WSGIScriptAlias + Phi.UriTemplate[action] + (option || '');
