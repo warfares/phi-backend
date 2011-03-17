@@ -8,9 +8,8 @@ Created by Rodolfo Barriga
 import phi.core.model as model
 
 class Base:
-
-	def __init__(self, entity, session):
-		self.entity = entity
+	
+	def __init__(self, session):
 		self.session = session
 
 	def all(self):
@@ -30,11 +29,8 @@ class Base:
 		self.session.commit()
 		return True
 
-
 class User(Base):
-	def __init__(self, session):
-		self.session = session
-		self.entity = model.User
+	entity = model.User
 	
 	def search_count(self, user_name, name, last_name, group_id, role_id):
 		query = self._build_base_query(user_name, name, last_name, group_id, role_id)
@@ -64,45 +60,25 @@ class User(Base):
 		return query
 		
 class Location(Base):
-	def __init__(self, session):
-		self.session = session
-		self.entity = model.Location
-
+	entity = model.Location
 
 class Workspace(Base):
-	def __init__(self, session):
-		self.session = session
-		self.entity = model.Workspace
+	entity = model.Workspace
 		
 	def get_by_owner(self, user_name):
 		return self.session.query(self.entity).filter(self.entity.user_name==user_name).all()
 
-
 class Node(Base):
-	def __init__(self, session):
-		self.session = session
-		self.entity = model.Node
-
+	entity = model.Node
 
 class Layer(Base):
-	def __init__(self, session):
-		self.session = session
-		self.entity = model.Layer
-
+	entity = model.Layer
 
 class Raster(Base):
-	def __init__(self, session):
-		self.session = session
-		self.entity = model.Raster
-
+	entity = model.Raster
 
 class Role(Base):
-	def __init__(self, session):
-		self.session = session
-		self.entity = model.Role
-
+	entity = model.Role
 
 class Group(Base):
-	def __init__(self, session):
-		self.session = session
-		self.entity = model.Group
+	entity = model.Group
