@@ -18,7 +18,7 @@ def get_by_owner():
 	start = int(request.GET.get('start'))
 	limit = int(request.GET.get('limit'))
 	
-	workspaces = repo.Workspace(session=module.session).get_by_owner(user_name)
+	workspaces = repo.Workspace(session=module.db_session).get_by_owner(user_name)
 	#paging by code (discrete values)
 	total = len(workspaces)
 	limit = start + limit
@@ -51,9 +51,9 @@ def create():
 	ws.public = True
 	ws.date = date.today()
 	
-	repo.Workspace(session=module.session).create_update(ws)
+	repo.Workspace(session=module.db_session).create_update(ws)
 
-	repo_user = repo.User(session=module.session)
+	repo_user = repo.User(session=module.db_session)
 	user = repo_user.read(user_name)
 	user.workspaces.append(ws)
 	repo_user.create_update(user)
@@ -62,7 +62,7 @@ def create():
 @route('workspace/:id')
 @module.rest_method
 def read(id):
-	ws = repo.Workspace(session=module.session).read(id)
+	ws = repo.Workspace(session=module.db_session).read(id)
 	o = vo.workspace(ws) if ws else ''
 	return o
 
@@ -78,7 +78,7 @@ def update():
 	overlays = o['overlays']
 	baselayer = o['baselayer']
 
-	repo_ws = repo.Workspace(session=module.session)
+	repo_ws = repo.Workspace(session=module.db_session)
 	ws = repo_ws.read(id)
 	
 	ws.name = name
@@ -96,7 +96,7 @@ def update():
 @delete('workspace/:id')
 @module.rest_method
 def delete(id):
-	repo_ws= repo.Workspace(session=module.session)
+	repo_ws= repo.Workspace(session=module.db_session)
 	ws = repo_ws.read(id)
 	repo_ws.delete(ws)
 	return vo.success(True)
@@ -109,7 +109,7 @@ def get_users():
 	start = int(request.GET.get('start'))
 	limit = int(request.GET.get('limit'))
 
-	workspace = repo.Workspace(session=module.session).read(id)
+	workspace = repo.Workspace(session=module.db_session).read(id)
 	users = workspace.users
 	
 	#paging by code (discrete values)
@@ -127,8 +127,8 @@ def add_users():
 	id = o["id"]
 	user_names = o["userNames"]
 
-	repo_workspace = repo.Workspace(session=module.session)
-	repo_user = repo.User(session=module.session)
+	repo_workspace = repo.Workspace(session=module.db_session)
+	repo_user = repo.User(session=module.db_session)
 
 	workspace = repo_workspace.read(id)
 
@@ -149,8 +149,8 @@ def remove_users():
 	id = o["id"]
 	user_names = o["userNames"]
 
-	repo_workspace = repo.Workspace(session=module.session)
-	repo_user = repo.User(session=module.session)
+	repo_workspace = repo.Workspace(session=module.db_session)
+	repo_user = repo.User(session=module.db_session)
 
 	workspace = repo_workspace.read(id)
 

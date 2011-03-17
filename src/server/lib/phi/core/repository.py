@@ -9,7 +9,7 @@ import phi.core.model as model
 
 class Base:
 
-	def __init__(self, entity, session = ''):
+	def __init__(self, entity, session):
 		self.entity = entity
 		self.session = session
 

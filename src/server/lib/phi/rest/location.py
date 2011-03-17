@@ -13,7 +13,7 @@ import phi.rest.vo as vo
 @route('location/all')
 @module.rest_method
 def all():
-	locations = repo.Location(session=module.session).all()
+	locations = repo.Location(session=module.db_session).all()
 	o = map(lambda l: vo.location(l), locations)
 	return vo.collection(o, len(o))
 
@@ -34,9 +34,9 @@ def create():
 	l.favorite = favorite
 	l.point = WKTSpatialElement(Point(point['x'], point['y']).wkt,96)
 	
-	repo.Location(session=module.session).create_update(l)
+	repo.Location(session=module.db_session).create_update(l)
 	
-	repo_user = repo.User(session=module.session)
+	repo_user = repo.User(session=module.db_session)
 	user = repo_user.read(user_name)
 	user.locations.append(l)
 	repo_user.create_update(user)
@@ -45,7 +45,7 @@ def create():
 @route('location/:id')
 @module.rest_method
 def read(id):
-	l = repo.Location(session=module.session).read(id)
+	l = repo.Location(session=module.db_session).read(id)
 	o = vo.location(l) if l else ''
 	return o
 	
@@ -57,7 +57,7 @@ def update():
 	name = o['name']
 	description = o['description']
 
-	repo_location = repo.Location(session=module.session)
+	repo_location = repo.Location(session=module.db_session)
 	l = repo_location.read(id)
 	l.name = name
 	l.description = description
@@ -67,7 +67,7 @@ def update():
 @delete('location/:id')
 @module.rest_method
 def delete(id):
-	repo_location = repo.Location(session=module.session)
+	repo_location = repo.Location(session=module.db_session)
 	l = repo_location.read(id)
 	repo_location.delete(l)
 	return vo.success(True)
@@ -79,7 +79,7 @@ def favorite():
 	id = o['id']
 	favorite = o['favorite']
 
-	repo_location = repo.Location(session=module.session)
+	repo_location = repo.Location(session=module.db_session)
 	l = repo_location.read(id)
 	l.favorite = favorite
 	repo_location.create_update(l)
