@@ -2,6 +2,7 @@ import logging
 import phi.core.session_helper as session_helper
 import random 
 import sys
+import bottle
 
 #init logger 
 LOG_FILENAME = '/log/debug.log'
@@ -9,7 +10,7 @@ FORMAT = "%(levelname)s %(asctime)s %(message)s"
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG, format=FORMAT)
 logger = logging.getLogger("restlog")
 
-#init session
+#init db (sql_alchemmy) session - session per request 
 db_session = session_helper.create_session() 
 
 
@@ -17,17 +18,23 @@ def rest_method(f, *args, **kwargs):
 	'''Common rest db actions decorator'''
 	
 	def wrapper(*args, **kwargs):
+		env_session = bottle.request.environ.get('beaker.session')
 		
-		#logger
+		#rest method logger
 		rid = random.randint(0,10000)
-		logger.debug('BEGIN rest async call:#' + str(rid) + ' ' + f.__name__)
+		logger.debug('BEGIN rest async call:# %s %s' %(str(rid), f.__name__))
 		
-		#TODO check AUTHENTICATED (session) user
+		#authentication 
+		if 'user_name' in env_session:
+			r = f(*args, **kwargs)
+			auth = True
+		else:
+			r = {'auth': False}
+			auth = False
 		
-		r = f(*args, **kwargs)
-		
+		#remove db (sql_alchemmy) session - session per request
 		db_session.close()
 		db_session.remove()
-		logger.debug('END rest sync call:#' + str(rid) + ' ' + f.__name__)
+		logger.debug('END rest sync call:# %s %s - auth: %s' %(str(rid), f.__name__, str(auth)))
 		return r
 	return wrapper
