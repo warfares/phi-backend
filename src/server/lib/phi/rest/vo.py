@@ -24,7 +24,7 @@ def success(success,error=''):
 	}
 	return vo
 
-def login_success(user,success, error=''):
+def auth(user,success, error=''):
 	vo = {
 		'user': user,
 		'success': success,
