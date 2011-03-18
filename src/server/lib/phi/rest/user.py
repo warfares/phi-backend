@@ -102,7 +102,7 @@ def delete(id):
 
 #TODO LDAP access...
 @post('user/login')
-@module.rest_method
+#@module.rest_method
 def login():
 	o = json.load(request.body)
 	user_name = o["userName"]
@@ -116,7 +116,20 @@ def login():
 	if(u.password != encode_password(password)):
 		return vo.login_success(None,False,'wrong password')
 
+	#created  user app session. (authenticated)
+	env_session = request.environ.get('beaker.session')
+	env_session['user_name'] = user_name
+	
+	#removing db_session (not common rest_method)
+	module.db_session.close()
+	module.db_session.remove()
+	
 	return vo.login_success(vo.user_base(u),True)
+
+@get('user/logout')
+def logout():
+	env_session = request.environ.get('beaker.session')
+	env_session.delete()
 
 
 @post('user/setpassword')
