@@ -111,10 +111,10 @@ def login():
 	u = repo.User(session=module.db_session).read(user_name)
 	
 	if(not u):
-		return vo.login_success(None,False,'user doesnt exist')
+		return vo.auth(None,False,'user doesnt exist')
 	
 	if(u.password != encode_password(password)):
-		return vo.login_success(None,False,'wrong password')
+		return vo.auth(None,False,'wrong password')
 
 	#created  user app session. (authenticated)
 	env_session = request.environ.get('beaker.session')
@@ -124,13 +124,27 @@ def login():
 	module.db_session.close()
 	module.db_session.remove()
 	
-	return vo.login_success(vo.user_base(u),True)
+	return vo.auth(vo.user_base(u),True)
 
+#TODO remove global bd_session access 
 @get('user/logout')
 def logout():
 	env_session = request.environ.get('beaker.session')
 	env_session.delete()
+	
+	return vo.success(True)
+	
+#TODO remove global bd_session access 
+@get('user/isauth')
+def isauth():
+	env_session = request.environ.get('beaker.session')
 
+	if 'user_name' in env_session:
+		user_name = env_session['user_name']
+		u = repo.User(session=module.db_session).read(user_name)
+		return vo.auth(vo.user_base(u),True)
+	else:
+		return vo.auth(None,False,'out of session')	 
 
 @post('user/setpassword')
 @module.rest_method
