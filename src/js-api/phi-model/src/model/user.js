@@ -28,6 +28,14 @@ Phi.model.User = Ext.extend(Phi.model.Entity, {
 			*/
 			'login',
 			/**
+			* @event login Event declaration
+			*/
+			'logout',
+			/**
+			* @event setpassword Event declaration
+			*/
+			'isauth',
+			/**
 			* @event setpassword Event declaration
 			*/
 			'setpassword',
@@ -52,7 +60,7 @@ Phi.model.User = Ext.extend(Phi.model.Entity, {
 	}
 	,
 	/**
-	* User login access
+	* User login access (create a server env_session (cookies))
 	* @param {String} userName user name (key)
 	* @param {String} password user password
 	* */
@@ -78,6 +86,43 @@ Phi.model.User = Ext.extend(Phi.model.Entity, {
 				var user = o.user;
 
 				this.fireEvent('login', status, credentials, user);
+			}
+		});
+	}
+	,
+	/**
+	* User logout (remove a server env_session (cookies))
+	*
+	* */
+	logout: function () {
+		Ext.Ajax.request({
+			url: Phi.UriTemplate.getUri('userLogout'),
+			method: 'Get',
+			headers: { 'Content-Type': 'text/json' },
+			scope: this,
+			success: function (response, options) {
+				var o = Ext.util.JSON.decode(response.responseText);
+				this.fireEvent('logout', o);
+			}
+		});
+	}
+	,
+	/**
+	* User is auth (check server env_session (cookies))
+	*
+	* */
+	isauth: function () {
+		Ext.Ajax.request({
+			url: Phi.UriTemplate.getUri('userIsauth'),
+			method: 'Get',
+			headers: { 'Content-Type': 'text/json' },
+			scope: this,
+			success: function (response, options) {
+				var o = Ext.util.JSON.decode(response.responseText);
+				var status = o.success;
+				var user = o.user;
+				
+				this.fireEvent('isauth', status, user);
 			}
 		});
 	}

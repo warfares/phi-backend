@@ -21,6 +21,8 @@ Phi.UriTemplate = {
 	users: '/user/all',
 	user: '/user',
 	userLogin: '/user/login',
+	userLogout : '/user/logout',
+	userIsauth : '/user/isauth',
 	userSetPassword: '/user/setpassword',
 	userSearch: '/user/search',
 	
@@ -39,7 +41,9 @@ Phi.UriTemplate = {
 	userGetNodes: '/user/getnodes',
 
 	//user rasters
-	userGetRasters: '/user/getrasters',  
+	userGetRasters: '/user/getrasters',
+	
+	//eof user
 
 	//layer service
 	layer: '/layer',
