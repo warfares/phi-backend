@@ -79,8 +79,9 @@ class ExtNode:
 
 
 def build_tree(ext_node, nodes):
-	# take care with order..
-	for t in sorted(filter(lambda n: n.parent_id == ext_node.id, nodes), key=lambda n: n.order):
+	# take care with order.
+	child_nodes_sort = sorted(filter(lambda n: n.parent_id == ext_node.id, nodes), key=lambda n: n.order)
+	for t in child_nodes_sort:
 		ext_child = ExtNode(t.id, t.description)
 		if (t.leaf):
 			ext_child.leaf = True
