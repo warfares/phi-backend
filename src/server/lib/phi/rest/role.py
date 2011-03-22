@@ -2,12 +2,13 @@ import json
 from bottle import get
 
 import phi.core.repository as repo
-import phi.rest as module
+
+from phi.rest import rest_method, db_session
 import phi.rest.vo as vo
 
 @get('role/all')
-@module.rest_method
+@rest_method
 def all():
-	roles = repo.Role(session = module.db_session).all()
+	roles = repo.Role(db_session).all()
 	o = map(lambda r: vo.role(r), roles)
 	return vo.collection(o, len(o))

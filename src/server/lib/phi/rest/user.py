@@ -4,7 +4,8 @@ import json
 from bottle import get, post, put, delete, request
 
 import phi.core.repository as repo
-import phi.rest as module
+
+from phi.rest import rest_method, db_session
 import phi.rest.vo as vo
 import phi.rest.util as util
 
@@ -13,7 +14,7 @@ from util import encode_password
 #Collections
 
 @get('user/search')
-@module.rest_method
+@rest_method
 def search():
 	
 	user_name_pattern = request.GET.get('userNamePattern')
@@ -28,7 +29,7 @@ def search():
 	start = int(request.GET.get('start'))
 	limit = int(request.GET.get('limit'))
 	
-	repo_user = repo.User(session=module.db_session)
+	repo_user = repo.User(db_session)
 	
 	user_name = util.like_filter(user_name_position, user_name_pattern)
 	name  = util.like_filter(name_position, name_pattern)
@@ -42,15 +43,15 @@ def search():
 
 
 @get('user/all')
-@module.rest_method
+@rest_method
 def all():
-	users = repo.User(session=module.db_session).all()
+	users = repo.User(db_session).all()
 	o = map(lambda u: vo.user_base(u), users)
 	return vo.collection(o, len(o))
 
 #CRUD
 @post('user')
-@module.rest_method
+@rest_method
 def create():
 	o = json.load(request.body)
 	user_name = o['userName']
@@ -64,18 +65,18 @@ def create():
 	u.last_name = last_name
 	u.email = email
 	
-	repo.User(session=module.db_session).create_update(u)
+	repo.User(db_session).create_update(u)
 	return vo.success(True)
 
 @get('user/:id')
-@module.rest_method
+@rest_method
 def read(id):
-	u = repo.User(session=module.db_session).read(id)
+	u = repo.User(db_session).read(id)
 	o = vo.user(u) if u else ''
 	return o
 
 @put('user')
-@module.rest_method
+@rest_method
 def update():
 	o = json.load(request.body)
 	user_name = o['userName']
@@ -83,7 +84,7 @@ def update():
 	last_name = o['lastName']
 	email = o['email']
 
-	repo_user = repo.User(session=module.db_session)
+	repo_user = repo.User(db_session)
 	u = repo_user.read(user_name)
 	u.name = name
 	u.last_name = last_name
@@ -93,9 +94,9 @@ def update():
 	return vo.success(True)
 
 @delete('user/:id')
-@module.rest_method
+@rest_method
 def delete(id):
-	repo_user = repo.User(session=module.db_session)
+	repo_user = repo.User(db_session)
 	u = repo_user.read(id)
 	repo_user.delete(u)
 	return vo.success(True)
@@ -109,7 +110,7 @@ def login():
 	user_name = o["userName"]
 	password = o["password"]
 	
-	u = repo.User(session=module.db_session).read(user_name)
+	u = repo.User(db_session).read(user_name)
 	
 	if(not u):
 		return vo.auth(None,False,'user doesnt exist')
@@ -142,18 +143,18 @@ def isauth():
 
 	if 'user_name' in env_session:
 		user_name = env_session['user_name']
-		u = repo.User(session=module.db_session).read(user_name)
+		u = repo.User(db_session).read(user_name)
 		return vo.auth(vo.user_base(u),True)
 	else:
 		return vo.auth(None,False,'out of session')	 
 
 @post('user/setpassword')
-@module.rest_method
+@rest_method
 def setpassword():
 	o = json.load(request.body)
 	user_name = o["userName"]
 	password = o["password"]
-	repo_user = repo.User(session=module.db_session)
+	repo_user = repo.User(db_session)
 	u = repo_user.read(user_name)
 	u.password = encode_password(password)
 	repo_user.create_update(u)
@@ -162,13 +163,13 @@ def setpassword():
 
 #User Locations
 @get('user/getlocations')
-@module.rest_method
+@rest_method
 def get_locations():
 	user_name = request.GET.get('userName')
 	start = int(request.GET.get('start'))
 	limit = int(request.GET.get('limit'))
 
-	locations = repo.User(session=module.db_session).read(user_name).locations
+	locations = repo.User(db_session).read(user_name).locations
 
 	#paging by code (discrete values)
 	total = len(locations)
@@ -178,17 +179,17 @@ def get_locations():
 	return vo.collection(o, total)
 
 @get('user/getfavlocations')
-@module.rest_method
+@rest_method
 def get_favlocations():
 	user_name = request.GET.get('userName')	
-	locations = repo.User(session=module.db_session).read(user_name).locations
+	locations = repo.User(db_session).read(user_name).locations
 	locations = filter(lambda l: l.favorite, locations)
 	o = map(lambda l: vo.location(l), locations)
 	return vo.collection(o, len(o))
 
 #User Workspace
 @get('user/searchworkspace')
-@module.rest_method
+@rest_method
 def search_workspace():
 	user_name = request.GET.get('userName')
 	start = int(request.GET.get('start'))
@@ -198,7 +199,7 @@ def search_workspace():
 	user_pattern = request.GET.get('userPattern')
 	user_position = request.GET.get('userPosition')
 	
-	workspaces = repo.User(session=module.db_session).read(user_name).workspaces
+	workspaces = repo.User(db_session).read(user_name).workspaces
 	
 	#filter owner
 	workspaces = util.collection_filter(user_position, user_pattern, 'user_name', workspaces)
@@ -217,10 +218,10 @@ def search_workspace():
 
 #User Layers
 @get('user/getlayers')
-@module.rest_method
+@rest_method
 def get_layer():
 	user_name = request.GET.get('userName')
-	nodes = repo.User(session=module.db_session).read(user_name).nodes
+	nodes = repo.User(db_session).read(user_name).nodes
 	layers = map(lambda n: n.layer,filter(lambda n: n.leaf, nodes))
 	
 	#sort
@@ -230,7 +231,7 @@ def get_layer():
 	
 
 @get('user/searchlayers')
-@module.rest_method
+@rest_method
 def search_layer():
 	user_name = request.GET.get('userName')
 	start = int(request.GET.get('start'))
@@ -239,7 +240,7 @@ def search_layer():
 	position = request.GET.get('position')
 	type = request.GET.get('type')
 
-	nodes = repo.User(session=module.db_session).read(user_name).nodes
+	nodes = repo.User(db_session).read(user_name).nodes
 	layers = map(lambda n: n.layer,filter(lambda n: n.leaf, nodes))
 
 	#filter type
@@ -260,10 +261,10 @@ def search_layer():
 
 #User Nodes
 @get('user/getnodes')
-@module.rest_method
+@rest_method
 def get_nodes():
 	user_name = request.GET.get('userName')
-	nodes = repo.User(session=module.db_session).read(user_name).nodes
+	nodes = repo.User(db_session).read(user_name).nodes
 	
 	tree = vo.ExtNode(0,'Minera los Pelambres')
 	vo.build_tree(tree, nodes)
@@ -271,10 +272,10 @@ def get_nodes():
 
 #User Raster
 @get('user/getrasters')
-@module.rest_method
+@rest_method
 def get_rasters():
 	user_name = request.GET.get('userName')
-	rasters = repo.User(session=module.db_session).read(user_name).rasters
+	rasters = repo.User(db_session).read(user_name).rasters
 	rasters = sorted(rasters, key=lambda r:r.order)
 	o = map(lambda r: vo.raster(r), rasters)
 	return vo.collection(o, len(o))
