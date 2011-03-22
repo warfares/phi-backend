@@ -1,5 +1,5 @@
 import json
-from bottle import *
+from bottle import get, post, put, delete, request
 from shapely.geometry import Point
 from geoalchemy import WKTSpatialElement
 
@@ -10,7 +10,7 @@ import phi.rest.vo as vo
 
 
 #Collections
-@route('location/all')
+@get('location/all')
 @module.rest_method
 def all():
 	locations = repo.Location(session=module.db_session).all()
@@ -42,7 +42,7 @@ def create():
 	repo_user.create_update(user)
 	return vo.success(True)
 
-@route('location/:id')
+@get('location/:id')
 @module.rest_method
 def read(id):
 	l = repo.Location(session=module.db_session).read(id)
