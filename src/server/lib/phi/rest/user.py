@@ -1,6 +1,8 @@
 import sys
-from bottle import *
 import json
+
+from bottle import get, post, put, delete, request
+
 import phi.core.repository as repo
 import phi.rest as module
 import phi.rest.vo as vo
@@ -10,8 +12,7 @@ from util import encode_password
 
 #Collections
 
-#TODO Search Users direct from DB.
-@route('user/search')
+@get('user/search')
 @module.rest_method
 def search():
 	
@@ -40,7 +41,7 @@ def search():
 	return vo.collection(o, total)
 
 
-@route('user/all')
+@get('user/all')
 @module.rest_method
 def all():
 	users = repo.User(session=module.db_session).all()
@@ -66,7 +67,7 @@ def create():
 	repo.User(session=module.db_session).create_update(u)
 	return vo.success(True)
 
-@route('user/:id')
+@get('user/:id')
 @module.rest_method
 def read(id):
 	u = repo.User(session=module.db_session).read(id)
@@ -160,7 +161,7 @@ def setpassword():
 	return vo.success(True)
 
 #User Locations
-@route('user/getlocations')
+@get('user/getlocations')
 @module.rest_method
 def get_locations():
 	user_name = request.GET.get('userName')
@@ -176,7 +177,7 @@ def get_locations():
 	o = map(lambda l: vo.location(l), locations[start:limit])
 	return vo.collection(o, total)
 
-@route('user/getfavlocations')
+@get('user/getfavlocations')
 @module.rest_method
 def get_favlocations():
 	user_name = request.GET.get('userName')	
@@ -186,7 +187,7 @@ def get_favlocations():
 	return vo.collection(o, len(o))
 
 #User Workspace
-@route('user/searchworkspace')
+@get('user/searchworkspace')
 @module.rest_method
 def search_workspace():
 	user_name = request.GET.get('userName')
@@ -215,7 +216,7 @@ def search_workspace():
 	return vo.collection(o, total)
 
 #User Layers
-@route('user/getlayers')
+@get('user/getlayers')
 @module.rest_method
 def get_layer():
 	user_name = request.GET.get('userName')
@@ -228,7 +229,7 @@ def get_layer():
 	return vo.collection(o, len(o))
 	
 
-@route('user/searchlayers')
+@get('user/searchlayers')
 @module.rest_method
 def search_layer():
 	user_name = request.GET.get('userName')
@@ -258,7 +259,7 @@ def search_layer():
 	return vo.collection(o, total)
 
 #User Nodes
-@route('user/getnodes')
+@get('user/getnodes')
 @module.rest_method
 def get_nodes():
 	user_name = request.GET.get('userName')
@@ -269,7 +270,7 @@ def get_nodes():
 	return tree.__dict__
 
 #User Raster
-@route('user/getrasters')
+@get('user/getrasters')
 @module.rest_method
 def get_rasters():
 	user_name = request.GET.get('userName')
