@@ -123,8 +123,8 @@ def login():
 	env_session['user_name'] = user_name
 	
 	#removing db_session (not common rest_method)
-	module.db_session.close()
-	module.db_session.remove()
+	db_session.close()
+	db_session.remove()
 	
 	return vo.auth(vo.user_base(u),True)
 
