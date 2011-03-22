@@ -18,13 +18,13 @@ def rest_method(f, *args, **kwargs):
 	'''Common rest db actions decorator'''
 	
 	def wrapper(*args, **kwargs):
-		env_session = bottle.request.environ.get('beaker.session')
 		
 		#rest method logger
 		rid = random.randint(0,10000)
 		logger.debug('BEGIN rest async call:# %s %s' %(str(rid), f.__name__))
 		
-		#authentication 
+		#authentication
+		env_session = bottle.request.environ.get('beaker.session')
 		if 'user_name' in env_session:
 			r = f(*args, **kwargs)
 			auth = True
