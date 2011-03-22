@@ -1,12 +1,11 @@
-from bottle import *
 import json
-import phi.core.model as model
-import phi.core.repository as repo
+from bottle import get
 
+import phi.core.repository as repo
 import phi.rest as module
 import phi.rest.vo as vo
 
-@route('role/all')
+@get('role/all')
 @module.rest_method
 def all():
 	roles = repo.Role(session = module.db_session).all()

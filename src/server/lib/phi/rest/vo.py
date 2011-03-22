@@ -1,4 +1,4 @@
-''' vo-> objects python to JS notation '''
+''' vo -> objects python to JS notation '''
 from shapely.wkb import loads 
 
 #general purpose 

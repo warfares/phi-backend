@@ -1,7 +1,8 @@
 from datetime import date
-
-from bottle import *
 import json
+
+from bottle import get, post, put, delete, request
+
 from shapely.geometry import Point
 from geoalchemy import WKTSpatialElement
 
@@ -11,7 +12,7 @@ import phi.rest as module
 import phi.rest.vo as vo
 
 
-@route('workspace/getbyowner')
+@get('workspace/getbyowner')
 @module.rest_method
 def get_by_owner():
 	user_name = request.GET.get('userName')
@@ -59,7 +60,7 @@ def create():
 	repo_user.create_update(user)
 	return vo.success(True)
 
-@route('workspace/:id')
+@get('workspace/:id')
 @module.rest_method
 def read(id):
 	ws = repo.Workspace(session=module.db_session).read(id)
@@ -102,7 +103,7 @@ def delete(id):
 	return vo.success(True)
 
 
-@route('workspace/getusers')
+@get('workspace/getusers')
 @module.rest_method
 def get_users():
 	id = int(request.GET.get('id'))
