@@ -130,6 +130,7 @@ def location(o):
 		'name':o.name,
 		'description':o.description,
 		'favorite':o.favorite,
+		'date':o.date.ctime(),
 		'point': point(p)
 	}
 	return vo
