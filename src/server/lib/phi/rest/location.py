@@ -65,7 +65,7 @@ def update():
 	l.name = name
 	l.description = description
 	l.date = datetime.now()
-	
+
 	repo_location.create_update(l)
 	return vo.success(True)
 
