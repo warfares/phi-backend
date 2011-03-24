@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 from bottle import get, post, put, delete, request
 from shapely.geometry import Point
@@ -34,6 +35,7 @@ def create():
 	l.description = description
 	l.favorite = favorite
 	l.point = WKTSpatialElement(Point(point['x'], point['y']).wkt,96)
+	l.date = datetime.now()
 	
 	repo.Location(db_session).create_update(l)
 	
@@ -62,6 +64,8 @@ def update():
 	l = repo_location.read(id)
 	l.name = name
 	l.description = description
+	l.date = datetime.now()
+	
 	repo_location.create_update(l)
 	return vo.success(True)
 
