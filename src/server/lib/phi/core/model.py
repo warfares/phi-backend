@@ -114,6 +114,7 @@ class Location(Base):
 	name = Column(String)
 	description = Column(String)
 	favorite = Column(Boolean)
+	date = Column(Date)
 	point = GeometryColumn(Point(2,96))
 	
 	def __repr__(self):
