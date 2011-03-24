@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 import json
 
 from bottle import get, post, put, delete, request
@@ -25,7 +25,10 @@ def get_by_owner():
 	total = len(workspaces)
 	limit = start + limit
 	
-	o = map(lambda ws: vo.workspace(ws), workspaces[start:limit])
+	#order by date
+	sort_ws = sorted(workspaces, key=lambda n: n.date, reverse=True)
+	
+	o = map(lambda ws: vo.workspace(ws), sort_ws[start:limit])
 	return vo.collection(o, total)
 
 #CRUD
@@ -51,7 +54,7 @@ def create():
 	ws.user_name = user_name
 	ws.point = WKTSpatialElement(Point(point['x'], point['y']).wkt,96)
 	ws.public = True
-	ws.date = date.today()
+	ws.date = datetime.now()
 	
 	repo.Workspace(db_session).create_update(ws)
 
@@ -90,7 +93,7 @@ def update():
 	ws.baselayer = baselayer
 	ws.point = WKTSpatialElement(Point(point['x'], point['y']).wkt,96)
 	ws.public = True
-	ws.date = date.today()
+	ws.date = datetime.now()
 	
 	repo_ws.create_update(ws)
 	return vo.success(True)
