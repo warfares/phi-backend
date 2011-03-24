@@ -174,8 +174,11 @@ def get_locations():
 	#paging by code (discrete values)
 	total = len(locations)
 	limit = start + limit
+	
+	#order by date
+	sort_l = sorted(locations, key=lambda n: n.date, reverse=True)
 
-	o = map(lambda l: vo.location(l), locations[start:limit])
+	o = map(lambda l: vo.location(l), sort_l[start:limit])
 	return vo.collection(o, total)
 
 @get('user/getfavlocations')
