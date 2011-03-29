@@ -2,14 +2,12 @@ Ext.ns("Phi");
 Ext.ns("Philosophy");
 Philosophy = Phi;
 
-//TODO fix this staic value.. !! 
-Phi.WSGIScriptAlias = 'phi-rest';
-
 /**
 * @class Phi.UriTemplate
 * @singleton
 *
-* Philosophy Simple hash table with python mod_wsgi rest services uri templates
+* Philosophy Simple hash table with python mod_wsgi rest services 
+* or .Net WCF Services uri templates
 * 
 * @author rbarriga
 * @version 1.0
@@ -17,60 +15,71 @@ Phi.WSGIScriptAlias = 'phi-rest';
 * @date     15. February 2011
 *
 */
+
+Phi.Net = true;
+
+var userService = Phi.Net ? 'svc/UserService.svc/rest' : 'phi-rest';
+var layerService = Phi.Net ? 'svc/LayerService.svc/rest' : 'phi-rest';
+var locationService = Phi.Net ? 'svc/LocationService.svc/rest' : 'phi-rest';
+var workspaceService = Phi.Net ? 'svc/WorkSpaceService.svc/rest' : 'phi-rest';
+var groupService = Phi.Net ? 'svc/GroupService.svc/rest' : 'phi-rest';
+var utilService = Phi.Net ? 'svc/UtilService.svc/rest' : 'phi-rest';
+
+
 Phi.UriTemplate = {
-	users: '/user/all',
-	user: '/user',
-	userLogin: '/user/login',
-	userLogout : '/user/logout',
-	userIsauth : '/user/isauth',
-	userSetPassword: '/user/setpassword',
-	userSearch: '/user/search',
+	users: userService + '/user/all',
+	user: userService + '/user',
+	userLogin: userService + '/user/login',
+	userLogout : userService + '/user/logout',
+	userIsauth : userService + '/user/isauth',
+	userSetPassword: userService + '/user/setpassword',
+	userSearch: userService + '/user/search',
 	
 	//user locations
-	userGetLocations: '/user/getlocations',
-	userGetFavLocations: '/user/getfavlocations',
+	userGetLocations: userService + '/user/getlocations',
+	userGetFavLocations: userService + '/user/getfavlocations',
 
 	//user workspace
-	userSearchWorkspace: '/user/searchworkspace',
+	userSearchWorkspace: workspaceService + '/user/searchworkspace',
 	
 	//user layers
-	userGetLayers: '/user/getlayers',
-	userSearchLayer : '/user/searchlayers',
+	userGetLayers: userService + '/user/getlayers',
+	userSearchLayer : userService + '/user/searchlayers',
 
 	//user nodes
-	userGetNodes: '/user/getnodes',
+	userGetNodes: userService + '/user/getnodes',
 
 	//user rasters
-	userGetRasters: '/user/getrasters',
+	userGetRasters: userService + '/user/getrasters',
 	
 	//eof user
 
 	//layer service
-	layer: '/layer',
+	layer: layerService +'/layer',
 	
 	//location 
-	location: '/location',
-	locationFavorite: '/location/favorite',
+	location: locationService + '/location',
+	locationFavorite: locationService +'/location/favorite',
 	
 	//workspace service
-	workspace: '/workspace',
-	workspaceGetByOwner: '/workspace/getbyowner',  
-	workspaceGetUsers: '/workspace/getusers', 
+	workspace: workspaceService + '/workspace',
+	workspaceGetByOwner: workspaceService + '/workspace/getbyowner',  
+	workspaceGetUsers: workspaceService + '/workspace/getusers', 
 	
-	workspaceAddUsers: '/workspace/addusers',  
-	workspaceRemoveUsers: '/workspace/removeusers',
+	workspaceAddUsers: workspaceService + '/workspace/addusers',  
+	workspaceRemoveUsers: workspaceService + '/workspace/removeusers',
 	
 	//group 
-	group: '/group',
-	groups: '/group/all',
+	group: groupService + '/group',
+	groups: groupService + '/group/all',
 	
 	//role
-	role: '/role',
-	roles: '/role/all',
+	role: utilService + '/role',
+	roles: utilService + '/role/all',
 	
 	getUri: function(action, option) {
-		var hostname = 'http://' + window.location.hostname + '/';
-		return hostname + Phi.WSGIScriptAlias + Phi.UriTemplate[action] + (option || '');
+		var hostname = 'http://' + window.location.hostname + ':' + window.location.port +  '/';
+		return hostname + Phi.UriTemplate[action] + (option || '');
 	}
 };// eo Phi.Uritemplate
 // eof
