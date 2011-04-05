@@ -16,7 +16,7 @@ Philosophy = Phi;
 *
 */
 
-Phi.Net = true;
+Phi.Net = false;
 
 var userService = Phi.Net ? 'svc/UserService.svc/rest' : 'phi-rest';
 var layerService = Phi.Net ? 'svc/LayerService.svc/rest' : 'phi-rest';
@@ -51,12 +51,12 @@ Phi.UriTemplate = {
 
 	//user rasters
 	userGetRasters: userService + '/user/getrasters',
-	
+
 	//eof user
 
 	//layer service
 	layer: layerService +'/layer',
-	
+
 	//location 
 	location: locationService + '/location',
 	locationFavorite: locationService +'/location/favorite',

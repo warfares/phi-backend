@@ -1,5 +1,5 @@
 import json
-from bottle import get
+from bottle import get, request
 
 import phi.core.repository as repo
 from phi.rest import rest_method, db_session
@@ -12,9 +12,10 @@ def all():
 	o = map(lambda l: vo.layer(l), layers)
 	return vo.collection(o, len(o))
 
-@get('layer/:id')
+@get('layer')
 @rest_method
-def read(id):
-	l = repo.Layer(db_session).read(id)
+def read():
+	layer_name = request.GET.get('layerName')
+	l = repo.Layer(db_session).read(layer_name)
 	o = vo.layer(l) if l else ''
 	return o
