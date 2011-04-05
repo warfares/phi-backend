@@ -66,7 +66,7 @@ def create():
 	u.email = email
 	
 	repo.User(db_session).create_update(u)
-	return vo.success(True)
+	return vo.action(True)
 
 @get('user/:id')
 @rest_method
@@ -91,7 +91,7 @@ def update():
 	u.email = email
 	
 	repo_user.create_update(u)
-	return vo.success(True)
+	return vo.action(True)
 
 @delete('user/:id')
 @rest_method
@@ -99,7 +99,7 @@ def delete(id):
 	repo_user = repo.User(db_session)
 	u = repo_user.read(id)
 	repo_user.delete(u)
-	return vo.success(True)
+	return vo.action(True)
 
 
 #TODO LDAP access...
@@ -134,7 +134,7 @@ def logout():
 	env_session = request.environ.get('beaker.session')
 	env_session.delete()
 	
-	return vo.success(True)
+	return vo.action(True)
 	
 #TODO remove global bd_session access 
 @get('user/isauth')
@@ -159,7 +159,7 @@ def setpassword():
 	u.password = encode_password(password)
 	repo_user.create_update(u)
 
-	return vo.success(True)
+	return vo.action(True)
 
 #User Locations
 @get('user/getlocations')

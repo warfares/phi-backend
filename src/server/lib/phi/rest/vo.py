@@ -17,7 +17,7 @@ def entity(o):
 	}
 	return vo
 
-def success(success,error=''):
+def action(success,error=''):
 	vo = {
 		'success': success,
 	    'errorMsg': error 

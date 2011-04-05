@@ -43,7 +43,7 @@ def create():
 	user = repo_user.read(user_name)
 	user.locations.append(l)
 	repo_user.create_update(user)
-	return vo.success(True)
+	return vo.action(True)
 
 @get('location/:id')
 @rest_method
@@ -67,7 +67,7 @@ def update():
 	l.date = datetime.now()
 
 	repo_location.create_update(l)
-	return vo.success(True)
+	return vo.action(True)
 
 @delete('location/:id')
 @rest_method
@@ -75,7 +75,7 @@ def delete(id):
 	repo_location = repo.Location(db_session)
 	l = repo_location.read(id)
 	repo_location.delete(l)
-	return vo.success(True)
+	return vo.action(True)
 
 @post('location/favorite')
 @rest_method
@@ -88,4 +88,4 @@ def favorite():
 	l = repo_location.read(id)
 	l.favorite = favorite
 	repo_location.create_update(l)
-	return vo.success(True)
+	return vo.action(True)

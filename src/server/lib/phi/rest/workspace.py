@@ -145,7 +145,7 @@ def add_users():
 	map(lambda user_name: add(user_name), user_names)
 	
 	repo_workspace.create_update(workspace)
-	return vo.success(True)
+	return vo.action(True)
 
 @post('workspace/removeusers')
 @rest_method
@@ -168,4 +168,4 @@ def remove_users():
 	map(lambda user_name: remove(user_name), user_names)
 
 	repo_workspace.create_update(workspace)
-	return vo.success(True)
+	return vo.action(True)
