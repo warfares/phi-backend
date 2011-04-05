@@ -174,7 +174,7 @@ def get_locations():
 	#paging by code (discrete values)
 	total = len(locations)
 	limit = start + limit
-	
+
 	#order by date
 	sort_l = sorted(locations, key=lambda n: n.date, reverse=True)
 
@@ -184,7 +184,7 @@ def get_locations():
 @get('user/getfavlocations')
 @rest_method
 def get_favlocations():
-	user_name = request.GET.get('userName')	
+	user_name = request.GET.get('userName')
 	locations = repo.User(db_session).read(user_name).locations
 	locations = filter(lambda l: l.favorite, locations)
 	o = map(lambda l: vo.location(l), locations)

@@ -8,7 +8,7 @@ Created by Rodolfo Barriga
 import phi.core.model as model
 
 class Base:
-	
+
 	def __init__(self, session):
 		self.session = session
 
