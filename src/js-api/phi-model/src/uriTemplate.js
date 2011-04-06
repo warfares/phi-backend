@@ -56,6 +56,7 @@ Phi.UriTemplate = {
 
 	//layer service
 	layer: layerService +'/layer',
+	layerGetFiles : layerService + '/layer/getfiles',
 
 	//location 
 	location: locationService + '/location',
