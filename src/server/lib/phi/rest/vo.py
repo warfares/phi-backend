@@ -169,3 +169,13 @@ def group(o):
 	'description':o.description
 	}
 	return vo
+
+def file(o):
+	vo = {
+	'id':o.id,
+	'filePhysicalName':o.file_physical_name,
+	'fileName':o.file_name,
+	'description':o.description,
+	'date':o.date.ctime()
+	}
+	return vo
