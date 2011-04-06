@@ -5,7 +5,7 @@ from bottle import get, post, put, delete, request
 
 import phi.core.repository as repo
 
-from phi.rest import rest_method, db_session
+from phi.rest import rest_method, db_session, root_node_name
 import phi.rest.vo as vo
 import phi.rest.util as util
 
@@ -269,7 +269,8 @@ def get_nodes():
 	user_name = request.GET.get('userName')
 	nodes = repo.User(db_session).read(user_name).nodes
 	
-	tree = vo.ExtNode(0,'Minera los Pelambres')
+	html_root_name = '<b>'+ root_node_name + ' [' + str(len(nodes)) + ']' + '</b>'
+	tree = vo.ext_node(0,html_root_name )
 	vo.build_tree(tree, nodes)
 	return tree.__dict__
 

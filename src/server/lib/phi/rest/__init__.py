@@ -14,6 +14,9 @@ logger = logging.getLogger("restlog")
 db_session = session_helper.create_session() 
 
 
+#root node name 
+root_node_name = 'Minera los Pelambres'
+
 def rest_method(f, *args, **kwargs):
 	'''Common rest db actions decorator'''
 	
