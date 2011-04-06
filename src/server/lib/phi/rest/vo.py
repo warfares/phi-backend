@@ -66,7 +66,7 @@ def user(o):
 	return vo
 
 #extjs node (layer) 
-class ExtNode:
+class ext_node:
 	def __init__(self, id, text):
 		self.id = id
 		self.text = text
@@ -77,18 +77,17 @@ class ExtNode:
 		self.layerId = ''
 		self.srid = -1
 
-
-def build_tree(ext_node, nodes):
+def build_tree(ext_parent_node, nodes):
 	# take care with order.
-	child_nodes_sort = sorted(filter(lambda n: n.parent_id == ext_node.id, nodes), key=lambda n: n.order)
+	child_nodes_sort = sorted(filter(lambda n: n.parent_id == ext_parent_node.id, nodes), key=lambda n: n.order)
 	for t in child_nodes_sort:
-		ext_child = ExtNode(t.id, t.description)
+		ext_child_node = ext_node(t.id, t.description)
 		if (t.leaf):
-			ext_child.leaf = True
-			ext_child.layerId = t.layer.name
-			ext_child.srid = t.layer.srid
-		ext_node.children.append(ext_child.__dict__)
-		build_tree(ext_child, nodes)
+			ext_child_node.leaf = True
+			ext_child_node.layerId = t.layer.name
+			ext_child_node.srid = t.layer.srid
+		ext_parent_node.children.append(ext_child_node.__dict__)
+		build_tree(ext_child_node, nodes)
 
 #raster 
 def raster(o):
