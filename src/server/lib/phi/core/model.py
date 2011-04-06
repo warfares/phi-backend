@@ -43,6 +43,10 @@ user_roles = Table('app_user_role', Base.metadata,
 	Column('app_role_id', Integer, ForeignKey('app_role.id'))
 )
 
+layer_files = Table('app_layer_file', Base.metadata,
+	Column('layer_name', String, ForeignKey('app_layer.name')),
+	Column('file_id', Integer, ForeignKey('app_file.id'))
+)
 
 
 class User(Base):
@@ -74,6 +78,7 @@ class Layer(Base):
 	type = Column(String)
 	date = Column(Date)
 	srid = Column(String)
+	files = relationship('File', secondary=layer_files, backref='app_layer')
 
 	def __repr__(self):
 		return "<Layer('%s','%s','%s')>" % (self.name, self.type, self.srid)
@@ -154,3 +159,15 @@ class Role(Base):
 	
 	def __repr__(self):
 		return "<Role('%s','%s')>" % (self.id, self.name)
+		
+
+class File(Base):
+	__tablename__ = 'app_file'
+	id = Column(Integer, primary_key=True)
+	file_physical_name = Column(String)
+	file_name = Column(String)
+	description = Column(String)
+	date = Column(Date)
+
+	def __repr__(self):
+		return "<Role('%s','%s')>" % (self.id, self.file_name)
