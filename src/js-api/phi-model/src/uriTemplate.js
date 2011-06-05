@@ -12,7 +12,7 @@ Philosophy = Phi;
 * @author rbarriga
 * @version 1.0
 * @copyright (c) 2011, by rbarriga
-* @date     15. February 2011
+* @date    15. February 2011
 *
 */
 
